@@ -7,7 +7,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/vi/get-api")
-public class HelloController {
+public class Controller {
 
     @RequestMapping("/hello")
     //그냥 RequestMapping은 모든 메소드(GET, POST...)가 다 가능하다
@@ -50,4 +50,23 @@ public class HelloController {
         MemberDto memberDto = new MemberDto(name,email,organization);
         return memberDto.toString();
     }
+
+    @RequestMapping(value = "/domain", method = RequestMethod.POST)
+    public String postExample() {
+        return "Hello Post API";
+    }
+
+    @PostMapping("member1")
+    public String postMember(@RequestBody Map<String, Object> postData) {
+        StringBuilder sb = new StringBuilder(); // Builder Pattern
+        postData.entrySet().forEach(map->sb.append(map.getKey()+":"+map.getValue()+"\n"));
+        return sb.toString();
+    }
+
+    @PostMapping("member2")
+    public String postMember2(@RequestBody MemberDto memberDto) {
+        return memberDto.toString();
+    }
+
+
 }
