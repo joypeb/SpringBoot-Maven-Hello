@@ -26,4 +26,10 @@ public class HelloController {
     public String getVariable1(@PathVariable String variable) {
         return "hello " + variable;
     }
+
+    @GetMapping(value = "/request1")
+    public String getVariable2(@RequestParam String name, String email ,int num){
+        String result = name + ", " + email + ", " + num;
+        return result;
+    }
 }
