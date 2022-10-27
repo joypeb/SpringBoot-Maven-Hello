@@ -1,5 +1,6 @@
 package com.example.hello.controller;
 
+import com.example.hello.domain.dto.MemberDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,22 +26,28 @@ public class HelloController {
     }
 
     @GetMapping(value = "/variable1/{variable}")
-    public String getVariable1(@PathVariable String variable) {
+    public String getVariable(@PathVariable String variable) {
         return "hello " + variable;
     }
 
     @GetMapping(value = "/request1")
-    public String getVariable2(@RequestParam String name, String email ,int num){
+    public String getVariable1(@RequestParam String name, String email ,int num){
         String result = name + ", " + email + ", " + num;
         return result;
     }
 
     @GetMapping(value = "/request2")
-    public String getVariable3(@RequestParam Map<String, String> param) {
+    public String getVariable2(@RequestParam Map<String, String> param) {
         String result = "";
         for(Map.Entry<String,String> map : param.entrySet()) {
             result += map.getKey() + ", " + map.getValue() + "\n";
         }
         return result;
+    }
+
+    @GetMapping(value = "/request3")
+    public String getVariable3(@RequestParam String name, String email ,String organization) {
+        MemberDto memberDto = new MemberDto(name,email,organization);
+        return memberDto.toString();
     }
 }
