@@ -16,7 +16,7 @@ public class UserController {
     @PostMapping("/user-add")
     public String addUser(User user) {
         int result = userDao.addUser(user);
-        if(result == 1) {
+        if(result >= 1) {
             return user.toString() + "\n추가 성공";
         } else {
             return "추가 실패";
@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping("/delete-all")
     public String deleteAll() {
         int result = userDao.deleteAll();
-        if(result == 1) {
+        if(result >= 1) {
             return "전체삭제 성공";
         } else {
             return "전체삭제 실패";
