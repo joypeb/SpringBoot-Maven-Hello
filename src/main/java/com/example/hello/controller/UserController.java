@@ -23,7 +23,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/delete-all")
+    @DeleteMapping("/delete-all")
     public String deleteAll() {
         int result = userDao.deleteAll();
         if(result >= 1) {
@@ -33,7 +33,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/delete-user")
+    @DeleteMapping("/delete-user")
     public String deleteUser(@RequestParam String id) {
         int result = userDao.deleteUser(id);
         if(result == 1) {
