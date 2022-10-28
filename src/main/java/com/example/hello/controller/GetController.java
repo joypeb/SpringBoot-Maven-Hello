@@ -1,6 +1,7 @@
 package com.example.hello.controller;
 
 import com.example.hello.domain.dto.MemberDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/vi/get-api")
+@Slf4j
 public class GetController {
 
     @RequestMapping("/hello")
@@ -19,6 +21,7 @@ public class GetController {
 
     @RequestMapping(value = "/hello2", method = RequestMethod.GET)
     public String hello2() {
+        log.info("hello2로 요청이 들어왔습니다");
         return "hello GET";
     }
 
@@ -29,12 +32,14 @@ public class GetController {
 
     @GetMapping(value = "/variable1/{variable}")
     public String getVariable(@PathVariable String variable) {
+        log.info("hello/"+variable+"로 요청이 들어왔습니다");
         return "hello " + variable;
     }
 
     @GetMapping(value = "/request1")
     public String getVariable1(@RequestParam String name, String email ,int num){
         String result = name + ", " + email + ", " + num;
+        log.info(result+"요청이 들어왔습니다");
         return result;
     }
 
