@@ -18,7 +18,11 @@ public class UserDao {
                 user.getId(), user.getName(), user.getPassword());
     }
 
-    public int deleteAll(String id) {
+    public int deleteAll() {
         return this.jdbcTemplate.update("delete from users");
+    }
+
+    public int deleteUser(String id) {
+        return this.jdbcTemplate.update("delete from users where id = ?", id);
     }
 }
