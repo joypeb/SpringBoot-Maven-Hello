@@ -1,11 +1,14 @@
 package com.example.hello.hospital.parser;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class ReadLineContext<T> {
 
     private Parser<T> parser;
@@ -22,7 +25,11 @@ public class ReadLineContext<T> {
         );
         String str;
         while ((str = reader.readLine()) != null) {
-            result.add(parser.parse(str));
+            try {
+                result.add(parser.parse(str));
+            } catch (Exception e) {
+                log.error("에러 : " + e + "파싱중 문제가 생겨 이 라인은 넘어갑니다." + str);
+            }
         }
         reader.close();
         return result;
