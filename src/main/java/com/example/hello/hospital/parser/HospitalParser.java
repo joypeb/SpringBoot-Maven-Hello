@@ -1,22 +1,27 @@
 package com.example.hello.hospital.parser;
 
 import com.example.hello.hospital.dto.Hospital;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class HospitalParser implements Parser<Hospital>{
 
     @Override
     public Hospital parse(String str) {
         String[] row = str.split("\",\"");
-
-        int year = Integer.parseInt(row[5].substring(0,4));
-        int month = Integer.parseInt(row[5].substring(4,6));
-        int day = Integer.parseInt(row[5].substring(6,8));
-
+        int year = 1900,month = 1,day = 1;
+        try {
+            year = Integer.parseInt(row[5].substring(0, 4));
+            month = Integer.parseInt(row[5].substring(4, 6));
+            day = Integer.parseInt(row[5].substring(6, 8));
+        } catch (Exception e) {
+            log.error(row[0] + "id error 날짜 형식 오류 : " + row[5]);
+        }
         Hospital hospital = new Hospital();
         hospital.setId(Integer.parseInt(row[0].replace("\"","")));
         hospital.setOpenServiceName(row[1]);
