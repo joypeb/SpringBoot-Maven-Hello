@@ -74,4 +74,18 @@ public class hospitalTest {
         System.out.println(hospitalDao.getCount());
         System.out.println(hospital1.toString());
     }
+
+    @Test
+    void addAllHospital() throws IOException {
+        String filename = "./src/main/resources/hospitalResources/hospital_fulldata.csv";
+        List<Hospital> hospitalList = hospitalReadLineContext.readByLine(filename);
+        int cnt = 0;
+
+        hospitalDao.deleteAll();
+        for (Hospital hospital : hospitalList) {
+           cnt += hospitalDao.add(hospital);
+        }
+
+        assertEquals(hospitalDao.getCount(),cnt);
+    }
 }
