@@ -3,7 +3,9 @@ package com.example.hello.hospital.dao;
 import com.example.hello.hospital.dto.Hospital;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HospitalDao {
     private final JdbcTemplate jdbcTemplate;
 
