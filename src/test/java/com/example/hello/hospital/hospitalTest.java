@@ -66,6 +66,12 @@ public class hospitalTest {
     void addHospital() {
         HospitalParser hp = new HospitalParser();
         Hospital hospital = hp.parse(line);
+
+        hospitalDao.deleteAll();
         hospitalDao.add(hospital);
+        Hospital hospital1 = hospitalDao.findById("1");
+
+        System.out.println(hospitalDao.getCount());
+        System.out.println(hospital1.toString());
     }
 }
