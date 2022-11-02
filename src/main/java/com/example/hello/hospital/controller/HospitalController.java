@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class HospitalController {
 
@@ -23,6 +25,7 @@ public class HospitalController {
     public ResponseEntity<String> selectOne(@PathVariable int id) {
 
         Hospital hospital = hospitalDao.findById(id);
+        Optional<Hospital> opt = Optional.ofNullable(hospital);
 
         StringBuilder sb = new StringBuilder();
 
