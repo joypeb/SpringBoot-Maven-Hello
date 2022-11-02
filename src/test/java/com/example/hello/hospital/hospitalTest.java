@@ -82,7 +82,8 @@ public class hospitalTest {
     @Test
     void addAllHospital() throws IOException {
         hospitalDao.deleteAll();
-        hospitalDao.saveAll(hostpitalService.largeInsertDate());
+        //hospitalDao.saveAll(hostpitalService.largeInsertDate());
+        hospitalDao.simpleBatch(hostpitalService.largeInsertDate());
 
         System.out.println(hospitalDao.getCount());
     }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -22,13 +23,14 @@ import java.util.List;
 @Slf4j
 public class HospitalDao {
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    public HospitalDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
 
     int batchSize = 10000;
-
-    @Autowired
-    public HospitalDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void saveAll(List<Hospital> hospitalList) {
         //배치의 개수를 위한 카운트 설정
@@ -51,16 +53,16 @@ public class HospitalDao {
         System.out.println("batchCount: " + batchCount);
     }
 
-    /*//simpleBatch - SimpleJdbcTemplate필요
-    private int simpleBatch(List<Hospital> subHospitals) {
-        SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(subHospitals.toArray());
-        jdbcTemplate.batchUpdate("INSERT INTO nation_wide_hospitals (id, open_service_name, open_local_government_code, management_number, license_date," +
+    //simpleBatch - NamedParameterJdbcTemplate
+    public int simpleBatch(List<Hospital> Hospitals) {
+        SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(Hospitals.toArray());
+        int[] count = namedParameterJdbcTemplate.batchUpdate("INSERT INTO nation_wide_hospitals (id, open_service_name, open_local_government_code, management_number, license_date," +
                 " business_status, business_status_code,phone, full_address, road_name_address, hospital_name," +
                 " business_type_name, healthcare_provider_count, patient_room_count, total_number_of_beds, total_area_size)"
                 + "VALUES (:id,:openServiceName,:openLocalGovernmentCode,:managementNumber,:licenseDate,:businessStatus,:businessStatusCode," +
                 ":phone,:fullAddress,:roadNameAddress,:hospitalName,:businessTypeName,:healthcareProviderCount,:patientRoomCount,:totalNumberOfBeds,:totalAreaSize);", batch);
-
-    }*/
+        return count.length;
+    }
 
     private int batchInsert(int batchCount, List<Hospital> subHospitals) {
         jdbcTemplate.batchUpdate("INSERT INTO nation_wide_hospitals (id, open_service_name, open_local_government_code, management_number, license_date,"+
