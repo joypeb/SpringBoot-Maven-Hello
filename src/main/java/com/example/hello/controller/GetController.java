@@ -57,9 +57,4 @@ public class GetController {
         MemberDto memberDto = new MemberDto(name,email,organization);
         return memberDto.toString();
     }
-
-    @GetMapping(value = "/karolina")
-    public String karolina () {
-        return "hi im park Karolina";
-    }
 }
