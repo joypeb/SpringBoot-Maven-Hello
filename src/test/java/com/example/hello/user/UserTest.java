@@ -1,4 +1,3 @@
-/*
 package com.example.hello.user;
 
 import com.example.hello.dao.UserDao;
@@ -49,4 +48,3 @@ public class UserTest {
         assertNotEquals(0, deleteResult);
     }
 }
-*/

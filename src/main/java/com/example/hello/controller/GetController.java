@@ -58,4 +58,8 @@ public class GetController {
         return memberDto.toString();
     }
 
+    @GetMapping(value = "/karolina")
+    public String karolina () {
+        return "hi im park Karolina";
+    }
 }

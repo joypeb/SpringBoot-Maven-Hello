@@ -1,4 +1,3 @@
-/*
 package com.example.hello.hospital;
 
 import com.example.hello.hospital.dao.HospitalDao;
@@ -89,4 +88,3 @@ public class hospitalTest {
         System.out.println(hospitalDao.getCount());
     }
 }
-*/
