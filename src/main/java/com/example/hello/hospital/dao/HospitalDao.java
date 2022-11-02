@@ -100,7 +100,7 @@ public class HospitalDao {
         return cnt;
     }
 
-    public Hospital findById(String id) {
+    public Hospital findById(int id) {
         String sql = "SELECT * FROM nation_wide_hospitals WHERE id = ?";
         return this.jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

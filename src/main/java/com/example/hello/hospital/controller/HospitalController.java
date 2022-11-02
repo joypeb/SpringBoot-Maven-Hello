@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,10 +19,11 @@ public class HospitalController {
         this.hospitalDao = hospitalDao;
     }
 
-    @GetMapping("/add-hospital")
-    public ResponseEntity<String> addHospital() {
-        int cnt = 0;
+    @GetMapping("/select-one/{id}")
+    public ResponseEntity<String> selectOne(@PathVariable int id) {
 
-        return new ResponseEntity<>(cnt + "건 DB추가 완료", HttpStatus.OK);
+        Hospital hospital = hospitalDao.findById(id);
+
+        return new ResponseEntity<>( hospital.toString(), HttpStatus.OK);
     }
 }

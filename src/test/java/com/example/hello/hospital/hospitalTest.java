@@ -69,7 +69,7 @@ public class hospitalTest {
 
         hospitalDao.deleteAll();
         hospitalDao.add(hospital);
-        Hospital hospital1 = hospitalDao.findById("1");
+        Hospital hospital1 = hospitalDao.findById(1);
 
         System.out.println(hospitalDao.getCount());
         System.out.println(hospital1.toString());
