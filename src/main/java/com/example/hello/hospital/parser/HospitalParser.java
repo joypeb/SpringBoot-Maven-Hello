@@ -14,9 +14,6 @@ public class HospitalParser implements Parser<Hospital>{
     @Override
     public Hospital parse(String str) {
         String[] row = str.replaceAll("\"","").split("\t");
-        for(int i=0; i<row.length; i++) {
-            System.out.println(i + "  " + row[i]);
-        }
         int year = 1900,month = 1,day = 1;
         try {
             year = Integer.parseInt(row[5].substring(0, 4));
