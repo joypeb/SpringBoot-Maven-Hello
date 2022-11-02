@@ -77,15 +77,12 @@ public class hospitalTest {
 
     @Test
     void addAllHospital() throws IOException {
-        String filename = "./src/main/resources/hospitalResources/hospital_fulldata.csv";
+        String filename = "./src/main/resources/hospitalResources/hospital_fulldata9.tsv";
         List<Hospital> hospitalList = hospitalReadLineContext.readByLine(filename);
-        int cnt = 0;
 
         hospitalDao.deleteAll();
-        for (Hospital hospital : hospitalList) {
-           cnt += hospitalDao.add(hospital);
-        }
+        hospitalDao.saveAll(hospitalList);
 
-        assertEquals(hospitalDao.getCount(),cnt);
+        System.out.println(hospitalDao.getCount());
     }
 }

@@ -3,27 +3,80 @@ package com.example.hello.hospital.dao;
 import com.example.hello.hospital.dto.Hospital;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
 public class HospitalDao {
     private final JdbcTemplate jdbcTemplate;
 
+    int batchSize = 10000;
+
     @Autowired
     public HospitalDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /*public int batchAdd(Hospital hospital) {
-        this.jdbcTemplate.batchUpdate();
-    }*/
+    public void saveAll(List<Hospital> hospitalList) {
+        int batchCount = 0;
+        List<Hospital> subHospitals = new ArrayList<>();
+        for (int i = 0; i < hospitalList.size(); i++) {
+            subHospitals.add(hospitalList.get(i));
+            if ((i + 1) % batchSize == 0) {
+                batchCount = batchInsert(batchCount, subHospitals);
+            }
+        }
+        if (!subHospitals.isEmpty()) {
+            batchCount = batchInsert(batchCount, subHospitals);
+        }
+        System.out.println("batchCount: " + batchCount);
+    }
+
+    private int batchInsert(int batchCount, List<Hospital> subHospitals) {
+        jdbcTemplate.batchUpdate("INSERT INTO nation_wide_hospitals (id, open_service_name, open_local_government_code, management_number, license_date,"+
+                " business_status, business_status_code,phone, full_address, road_name_address, hospital_name,"+
+                " business_type_name, healthcare_provider_count, patient_room_count, total_number_of_beds, total_area_size)"
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setInt(1, subHospitals.get(i).getId());
+                ps.setString(2, subHospitals.get(i).getOpenServiceName());
+                ps.setInt(3, subHospitals.get(i).getOpenLocalGovernmentCode());
+                ps.setString(4, subHospitals.get(i).getManagementNumber());
+                ps.setTimestamp(5, Timestamp.valueOf(subHospitals.get(i).getLicenseDate()));
+                ps.setInt(6, subHospitals.get(i).getBusinessStatus());
+                ps.setInt(7, subHospitals.get(i).getBusinessStatusCode());
+                ps.setString(8, subHospitals.get(i).getPhone());
+                ps.setString(9, subHospitals.get(i).getFullAddress());
+                ps.setString(10, subHospitals.get(i).getRoadNameAddress());
+                ps.setString(11, subHospitals.get(i).getHospitalName());
+                ps.setString(12, subHospitals.get(i).getBusinessTypeName());
+                ps.setInt(13, subHospitals.get(i).getHealthcareProviderCount());
+                ps.setInt(14, subHospitals.get(i).getPatientRoomCount());
+                ps.setInt(15, subHospitals.get(i).getTotalNumberOfBeds());
+                ps.setFloat(16, subHospitals.get(i).getTotalAreaSize());
+
+            }
+
+            @Override
+            public int getBatchSize() {
+                return subHospitals.size();
+            }
+        });
+        subHospitals.clear();
+        batchCount++;
+        return batchCount;
+    }
 
     public int add(Hospital hospital) {
         String sql = "INSERT INTO nation_wide_hospitals (id, open_service_name, open_local_government_code, management_number, license_date,"+

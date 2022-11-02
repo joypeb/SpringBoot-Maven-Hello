@@ -13,7 +13,10 @@ public class HospitalParser implements Parser<Hospital>{
 
     @Override
     public Hospital parse(String str) {
-        String[] row = str.split("\",\"");
+        String[] row = str.replaceAll("\"","").split("\t");
+        for(int i=0; i<row.length; i++) {
+            System.out.println(i + "  " + row[i]);
+        }
         int year = 1900,month = 1,day = 1;
         try {
             year = Integer.parseInt(row[5].substring(0, 4));
@@ -32,7 +35,7 @@ public class HospitalParser implements Parser<Hospital>{
         hospital.setBusinessStatusCode(Integer.parseInt(row[9]));
         hospital.setPhone(row[15]);
         hospital.setFullAddress(row[18]);
-        hospital.setRoadNameAddress(row[19]);
+        hospital.setRoadNameAddress(row[19].replaceAll("\"",""));
         hospital.setHospitalName(row[21]);
         hospital.setBusinessTypeName(row[25]);
         hospital.setHealthcareProviderCount(Integer.parseInt(row[29]));
